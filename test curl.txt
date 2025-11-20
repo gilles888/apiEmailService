@@ -1,0 +1,8 @@
+curl -X POST http://localhost:8080/api/mail/send   -H "Content-Type: application/json"   -d '{
+    "appCode": "GILMOTECH",
+    "mailType": "CONTACT_FORM",
+    "name": "Gilles",
+    "email": "gilmoreau@hotmail.com",
+    "message": "Ceci est un test simple.",
+    "website": ""
+  }'

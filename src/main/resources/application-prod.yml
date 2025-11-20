@@ -1,0 +1,33 @@
+spring:
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        debug: false
+
+logging:
+  level:
+    com.gilmotech.emailservice: INFO
+    org.springframework.mail: WARN
+
+app:
+  mail:
+    rate-limit:
+      enabled: true
+      max-per-hour: 10
+
+  cors:
+    allowed-origins:
+      - https://assurantis.gilmotech.be
+      - https://www.gilmotech.be
+      - http://localhost:4200
+    allowed-methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+      - PATCH

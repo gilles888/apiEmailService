@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: email-service
+
+  mail:
+    host: smtp.mail.ovh.net
+    port: 465
+    username: contact@gilmotech.be
+    password: Gilmo=270188
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+      debug: true
+
+  thymeleaf:
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+
+app:
+  mail:
+    rate-limit:
+      enabled: false
+
+  cors:
+    allowed-origins:
+      - http://localhost:4200
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.gilmotech.emailservice: DEBUG
+    org.springframework.mail: DEBUG

@@ -1,0 +1,21 @@
+spring:
+  mail:
+    host: localhost
+    port: 3025
+    username: test
+    password: test
+    properties:
+      mail:
+        smtp:
+          auth: false
+          ssl:
+            enable: false
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+
+app:
+  mail:
+    rate-limit:
+      enabled: false

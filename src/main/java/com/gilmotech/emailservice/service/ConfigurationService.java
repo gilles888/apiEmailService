@@ -1,0 +1,67 @@
+package com.gilmotech.emailservice.service;
+
+import com.gilmotech.emailservice.model.AppCode;
+import com.gilmotech.emailservice.model.MailConfiguration;
+import com.gilmotech.emailservice.model.MailType;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import jakarta.annotation.PostConstruct;
+import java.util.*;
+
+@Service
+@Slf4j
+public class ConfigurationService {
+
+    private final Map<String, MailConfiguration> configurations = new HashMap<>();
+
+    @PostConstruct
+    public void init() {
+        // Configuration Assurantis - Contact
+        MailConfiguration assurantisContact = new MailConfiguration();
+        assurantisContact.setAppCode(AppCode.ASSURANTIS);
+        assurantisContact.setMailType(MailType.CONTACT_FORM);
+        assurantisContact.setFromAddress("contact@assurantis.be");
+        assurantisContact.setFromName("Assurantis");
+        assurantisContact.setToAddresses(List.of("contact@assurantis.be"));
+        assurantisContact.setReplyTo("contact@assurantis.be");
+        assurantisContact.setSubject("Nouveau message de contact - Assurantis");
+        assurantisContact.setTemplatePath("email/assurantis/contact");
+        assurantisContact.setActive(true);
+
+        // Configuration Gilmotech - Contact
+        MailConfiguration gilmotechContact = new MailConfiguration();
+        gilmotechContact.setAppCode(AppCode.GILMOTECH);
+        gilmotechContact.setMailType(MailType.CONTACT_FORM);
+        gilmotechContact.setFromAddress("contact@gilmotech.be");
+        gilmotechContact.setFromName("Gilmotech");
+        gilmotechContact.setToAddresses(List.of("contact@gilmotech.be"));
+        gilmotechContact.setReplyTo("contact@gilmotech.be");
+        gilmotechContact.setSubject("Nouveau message de contact - Gilmotech");
+        gilmotechContact.setTemplatePath("email/gilmotech/contact");
+        gilmotechContact.setActive(true);
+
+        // Ajouter à la map
+        configurations.put(getKey(AppCode.ASSURANTIS, MailType.CONTACT_FORM), assurantisContact);
+        configurations.put(getKey(AppCode.GILMOTECH, MailType.CONTACT_FORM), gilmotechContact);
+
+        log.info("Configurations chargées: {}", configurations.size());
+    }
+
+    public MailConfiguration getConfiguration(AppCode appCode, MailType mailType) {
+        String key = getKey(appCode, mailType);
+        MailConfiguration config = configurations.get(key);
+
+        if (config == null || !config.isActive()) {
+            throw new IllegalArgumentException(
+                    String.format("Configuration non trouvée pour %s / %s", appCode, mailType)
+            );
+        }
+
+        return config;
+    }
+
+    private String getKey(AppCode appCode, MailType mailType) {
+        return appCode + "_" + mailType;
+    }
+}

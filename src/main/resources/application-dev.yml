@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: email-service
+
+  mail:
+    host: localhost
+    port: 1025  # MailHog ou port de test
+    username:   # Vide
+    password:   # Vide
+    properties:
+      mail:
+        smtp:
+          auth: false              # ⚠️ IMPORTANT : Désactiver l'auth
+          starttls:
+            enable: false
+          ssl:
+          #  enable: false
+        debug: true                # Pour voir les logs détaillés
+
+  thymeleaf:
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+
+app:
+  mail:
+    rate-limit:
+      enabled: false
+
+  cors:
+    allowed-origins:
+      - http://localhost:4200
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.gilmotech.emailservice: DEBUG
+    org.springframework.mail: DEBUG

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouveau message de contact</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            margin: -30px -30px 20px -30px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .field {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+        .field-label {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .field-value {
+            color: #333;
+            font-size: 14px;
+        }
+        .message-content {
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📧 Nouveau message de contact</h1>
+    </div>
+
+    <p>Vous avez reçu un nouveau message via le formulaire de contact d'Assurantis.</p>
+
+    <div class="field">
+        <div class="field-label">Nom</div>
+        <div class="field-value" th:text="${name}">John Doe</div>
+    </div>
+
+    <div class="field">
+        <div class="field-label">Email</div>
+        <div class="field-value">
+            <a th:href="'mailto:' + ${email}" th:text="${email}">email@example.com</a>
+        </div>
+    </div>
+
+    <div class="field" th:if="${phone}">
+        <div class="field-label">Téléphone</div>
+        <div class="field-value">
+            <a th:href="'tel:' + ${phone}" th:text="${phone}">+32 123 45 67 89</a>
+        </div>
+    </div>
+
+    <div class="field" th:if="${company}">
+        <div class="field-label">Entreprise</div>
+        <div class="field-value" th:text="${company}">Acme Corp</div>
+    </div>
+
+    <div class="field" th:if="${subject}">
+        <div class="field-label">Sujet</div>
+        <div class="field-value" th:text="${subject}">Demande d'information</div>
+    </div>
+
+    <div class="field">
+        <div class="field-label">Message</div>
+        <div class="message-content" th:text="${message}">
+            Contenu du message ici...
+        </div>
+    </div>
+
+    <div style="text-align: center;">
+        <a th:href="'mailto:' + ${email}" class="cta-button">
+            Répondre directement
+        </a>
+    </div>
+
+    <div class="footer">
+        <p>Ce message a été envoyé depuis le site web Assurantis<br>
+            <a href="https://assurantis.gilmotech.be">https://assurantis.gilmotech.be</a></p>
+    </div>
+</div>
+</body>
+</html>

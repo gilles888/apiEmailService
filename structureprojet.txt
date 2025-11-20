@@ -1,0 +1,38 @@
+email-service/
+├── src/main/java/com/gilmotech/emailservice/
+│   ├── EmailServiceApplication.java
+│   ├── config/
+│   │   ├── MailConfig.java
+│   │   ├── CorsConfig.java
+│   │   └── SecurityConfig.java
+│   ├── controller/
+│   │   └── MailController.java
+│   ├── dto/
+│   │   ├── MailRequestDto.java
+│   │   └── MailResponseDto.java
+│   ├── model/
+│   │   ├── AppCode.java (enum)
+│   │   ├── MailType.java (enum)
+│   │   └── MailConfiguration.java
+│   ├── service/
+│   │   ├── MailService.java
+│   │   ├── TemplateService.java
+│   │   └── ConfigurationService.java
+│   ├── repository/
+│   │   └── MailConfigurationRepository.java
+│   └── exception/
+│       ├── MailSendingException.java
+│       └── GlobalExceptionHandler.java
+├── src/main/resources/
+│   ├── application.yml
+│   ├── application-prod.yml
+│   ├── mail-configs.yml
+│   └── templates/
+│       └── email/
+│           ├── assurantis/
+│           │   ├── contact.html
+│           │   └── quote.html
+│           └── gilmotech/
+│               ├── contact.html
+│               └── quote.html
+└── pom.xml

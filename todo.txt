@@ -1,0 +1,5 @@
+*modifier le serviceeamil et ajouter une message de confirmation
+lorsqu'un message est envoye faire template
+
+
+*config service a mettre ç jour

@@ -1,0 +1,32 @@
+mail-configurations:
+  - appCode: ASSURANTIS
+    mailType: CONTACT_FORM
+    from: contact@assurantis.be
+    fromName: Assurantis
+    to:
+      - contact@assurantis.be
+    replyTo: contact@assurantis.be
+    subject: "Nouveau message de contact - Assurantis"
+    template: email/assurantis/contact
+
+  - appCode: ASSURANTIS
+    mailType: QUOTE_REQUEST
+    from: devis@assurantis.be
+    fromName: Assurantis - Demandes de devis
+    to:
+      - devis@assurantis.be
+    cc:
+      - commercial@assurantis.be
+    replyTo: devis@assurantis.be
+    subject: "Nouvelle demande de devis"
+    template: email/assurantis/quote
+
+  - appCode: GILMOTECH
+    mailType: CONTACT_FORM
+    from: contact@gilmotech.be
+    fromName: Gilmotech
+    to:
+      - contact@gilmotech.be
+    replyTo: contact@gilmotech.be
+    subject: "Nouveau message de contact - Gilmotech"
+    template: email/gilmotech/contact
