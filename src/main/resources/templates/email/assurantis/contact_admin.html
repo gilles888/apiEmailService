@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouveau message de contact</title>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: #4A4A4A;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #F5F5F5;
+        }
+        .container {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #C0182A 0%, #8F1120 100%);
+            color: white;
+            padding: 32px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        .header p {
+            margin: 8px 0 0 0;
+            opacity: 0.95;
+            font-size: 0.95rem;
+        }
+        .content {
+            padding: 32px;
+        }
+        .intro {
+            margin-bottom: 28px;
+            padding: 16px;
+            background: #FEF2F2;
+            border-left: 4px solid #C0182A;
+            border-radius: 0.5rem;
+            color: #4A4A4A;
+        }
+        .field {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #F5F5F5;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        .field:hover {
+            background: #E5E5E5;
+            transform: translateX(4px);
+        }
+        .field-label {
+            font-weight: 600;
+            color: #C0182A;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        .field-value {
+            color: #4A4A4A;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .field-value a {
+            color: #C0182A;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .field-value a:hover {
+            color: #8F1120;
+            text-decoration: underline;
+        }
+        .message-content {
+            background: #FFFFFF;
+            padding: 24px;
+            border: 2px solid #E5E5E5;
+            border-radius: 0.75rem;
+            margin-top: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.7;
+            color: #4A4A4A;
+        }
+        .cta-section {
+            text-align: center;
+            margin: 32px 0;
+            padding: 24px;
+            background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
+            border-radius: 0.75rem;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #C0182A 0%, #8F1120 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 16px rgba(192, 24, 42, 0.2);
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(192, 24, 42, 0.3);
+        }
+        .footer {
+            margin-top: 32px;
+            padding: 24px 32px;
+            background: #F5F5F5;
+            border-top: 1px solid #E5E5E5;
+            font-size: 0.85rem;
+            color: #8C8C8C;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .footer a {
+            color: #C0182A;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #C0182A;
+            color: white;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📧 Nouveau Message</h1>
+        <p>Formulaire de contact Assurantis</p>
+    </div>
+
+    <div class="content">
+        <div class="intro">
+            <strong>📩 Notification :</strong> Vous avez reçu un nouveau message via le formulaire de contact du site web Assurantis.
+        </div>
+
+        <div class="field">
+            <div class="field-label">👤 Nom</div>
+            <div class="field-value" th:text="${name}">John Doe</div>
+        </div>
+
+        <div class="field">
+            <div class="field-label">✉️ Email</div>
+            <div class="field-value">
+                <a th:href="'mailto:' + ${email}" th:text="${email}">email@example.com</a>
+            </div>
+        </div>
+
+        <div class="field" th:if="${phone}">
+            <div class="field-label">📱 Téléphone</div>
+            <div class="field-value">
+                <a th:href="'tel:' + ${phone}" th:text="${phone}">+32 123 45 67 89</a>
+            </div>
+        </div>
+
+        <div class="field" th:if="${company}">
+            <div class="field-label">🏢 Entreprise</div>
+            <div class="field-value" th:text="${company}">Acme Corp</div>
+        </div>
+
+        <div class="field" th:if="${subject}">
+            <div class="field-label">📋 Sujet</div>
+            <div class="field-value" th:text="${subject}">Demande d'information</div>
+        </div>
+
+        <div class="field">
+            <div class="field-label">💬 Message</div>
+            <div class="message-content" th:text="${message}">
+                Contenu du message ici...
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <p style="margin: 0 0 16px 0; color: #4A4A4A; font-weight: 600;">
+                Répondez rapidement à cette demande
+            </p>
+            <a th:href="'mailto:' + ${email}" class="cta-button">
+                📧 Répondre directement
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>
+            <strong>Assurantis</strong> - Votre partenaire en assurance<br>
+            Message envoyé depuis <a href="https://assurantis.gilmotech.be">assurantis.gilmotech.be</a><br>
+            <span style="color: #8C8C8C; font-size: 0.8rem;">
+                © 2024 Assurantis. Tous droits réservés.
+            </span>
+        </p>
+    </div>
+</div>
+</body>
+</html>
