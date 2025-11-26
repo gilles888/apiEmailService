@@ -22,5 +22,6 @@ public class MailConfiguration {
     private String replyTo;
     private String subject;
     private String templatePath;
+    private String templatePathConfirmation;
     private boolean active = true;
 }

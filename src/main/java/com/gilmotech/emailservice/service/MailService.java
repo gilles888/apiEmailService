@@ -59,6 +59,9 @@ public class MailService {
             sendEmail(config, htmlContent, textContent, request.getEmail());
             log.info("Email envoyé avec succès pour {} / {}", appCode, mailType);
 
+            sendEmailToConfirm(config, htmlContent, textContent, request.getEmail());
+            log.info("Email envoyé avec succès pour confirmation {} / {}", appCode, mailType);
+
         } catch (MessagingException | UnsupportedEncodingException e) {
             log.error("Erreur lors de l'envoi de l'email", e);
             throw new MailSendingException("SEND_FAILED", "Impossible d'envoyer l'email", e);
@@ -86,6 +89,57 @@ public class MailService {
 
         return variables;
     }
+
+
+    private void sendEmailToConfirm(
+            MailConfiguration config,
+            String htmlContent,
+            String textContent,
+            String userEmail
+    ) throws MessagingException, UnsupportedEncodingException {
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+        // Expéditeur
+        helper.setFrom(
+                new InternetAddress(config.getFromAddress(), config.getFromName())
+        );
+
+        // Destinataires
+        helper.setTo(userEmail);
+
+        if (config.getCcAddresses() != null && !config.getCcAddresses().isEmpty()) {
+            helper.setCc(config.getCcAddresses().toArray(new String[0]));
+        }
+
+        if (config.getBccAddresses() != null && !config.getBccAddresses().isEmpty()) {
+            helper.setBcc(config.getBccAddresses().toArray(new String[0]));
+        }
+
+        // Reply-To : l'utilisateur qui a rempli le formulaire
+        helper.setReplyTo(userEmail);
+
+        // Sujet
+        helper.setSubject(config.getSubject());
+
+        // Contenu (HTML + texte en fallback)
+        helper.setText(textContent, htmlContent);
+
+        // Logs détaillés avant envoi
+        String fromAddr = config.getFromAddress();
+        String fromName = config.getFromName() != null ? config.getFromName() : "";
+        String[] to = config.getToAddresses().toArray(new String[0]);
+        String[] cc = config.getCcAddresses() != null ? config.getCcAddresses().toArray(new String[0]) : new String[0];
+        String[] bcc = config.getBccAddresses() != null ? config.getBccAddresses().toArray(new String[0]) : new String[0];
+
+        log.info("Envoi email — expéditeur: {} <{}>, destinataires: {}, cc: {}, bcc: {}, replyTo: {}",
+                fromName, fromAddr, Arrays.toString(to), Arrays.toString(cc), Arrays.toString(bcc), userEmail);
+
+        // Envoi
+        mailSender.send(message);
+    }
+
 
     private void sendEmail(
             MailConfiguration config,

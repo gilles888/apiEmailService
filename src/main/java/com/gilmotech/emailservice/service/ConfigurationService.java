@@ -26,7 +26,8 @@ public class ConfigurationService {
         assurantisContact.setToAddresses(List.of("contact@assurantis.be"));
         assurantisContact.setReplyTo("contact@assurantis.be");
         assurantisContact.setSubject("Nouveau message de contact - Assurantis");
-        assurantisContact.setTemplatePath("email/assurantis/contact");
+        assurantisContact.setTemplatePath("email/assurantis/contact_admin");
+        assurantisContact.setTemplatePathConfirmation("email/assurantis/contact_confirmation");
         assurantisContact.setActive(true);
 
         // Configuration Gilmotech - Contact
