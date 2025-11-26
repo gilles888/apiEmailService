@@ -30,6 +30,19 @@ public class ConfigurationService {
         assurantisContact.setTemplatePathConfirmation("email/assurantis/contact_confirmation");
         assurantisContact.setActive(true);
 
+        // Configuration Assurantis - Demande de Devis
+        MailConfiguration assurantisQuote = new MailConfiguration();
+        assurantisQuote.setAppCode(AppCode.ASSURANTIS);
+        assurantisQuote.setMailType(MailType.QUOTE_REQUEST);
+        assurantisQuote.setFromAddress("contact@assurantis.be");
+        assurantisQuote.setFromName("Assurantis - Demandes de Devis");
+        assurantisQuote.setToAddresses(List.of("contact@assurantis.be"));
+        assurantisQuote.setReplyTo("contact@assurantis.be");
+        assurantisQuote.setSubject("Nouvelle demande de devis - Assurantis");
+        assurantisQuote.setTemplatePath("email/assurantis/quote_admin");
+        assurantisQuote.setTemplatePathConfirmation("email/assurantis/quote_confirmation");
+        assurantisQuote.setActive(true);
+
         // Configuration Gilmotech - Contact
         MailConfiguration gilmotechContact = new MailConfiguration();
         gilmotechContact.setAppCode(AppCode.GILMOTECH);
@@ -43,6 +56,7 @@ public class ConfigurationService {
         gilmotechContact.setActive(true);
 
         // Ajouter à la map
+        configurations.put(getKey(AppCode.ASSURANTIS, MailType.QUOTE_REQUEST), assurantisQuote);
         configurations.put(getKey(AppCode.ASSURANTIS, MailType.CONTACT_FORM), assurantisContact);
         configurations.put(getKey(AppCode.GILMOTECH, MailType.CONTACT_FORM), gilmotechContact);
 

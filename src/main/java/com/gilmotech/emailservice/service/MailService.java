@@ -48,23 +48,38 @@ public class MailService {
         Map<String, Object> variables = prepareTemplateVariables(request);
 
         // 4. Génération du contenu
-        String htmlContent = templateService.generateHtmlContent(
+        String adminHtmlContent = templateService.generateHtmlContent(
                 config.getTemplatePath(),
                 variables
         );
-        String textContent = templateService.generateTextContent(variables);
+        String adminTextContent = templateService.generateTextContent(variables);
 
         // 5. Envoi de l'email
         try {
-            sendEmail(config, htmlContent, textContent, request.getEmail());
-            log.info("Email envoyé avec succès pour {} / {}", appCode, mailType);
-
-            sendEmailToConfirm(config, htmlContent, textContent, request.getEmail());
-            log.info("Email envoyé avec succès pour confirmation {} / {}", appCode, mailType);
-
+            sendEmailToAdmin(config, adminHtmlContent, adminTextContent, request.getEmail());
+            log.info("Email admin envoyé avec succès pour {} / {}", appCode, mailType);
         } catch (MessagingException | UnsupportedEncodingException e) {
-            log.error("Erreur lors de l'envoi de l'email", e);
-            throw new MailSendingException("SEND_FAILED", "Impossible d'envoyer l'email", e);
+            log.error("Erreur lors de l'envoi de l'email admin", e);
+            throw new MailSendingException("ADMIN_SEND_FAILED", "Impossible d'envoyer l'email à l'admin", e);
+        }
+
+        // 6. Envoi de l'email de confirmation au client (si template défini)
+        if (config.getTemplatePathConfirmation() != null && !config.getTemplatePathConfirmation().isEmpty()) {
+            try {
+                String confirmHtmlContent = templateService.generateHtmlContent(
+                        config.getTemplatePathConfirmation(),
+                        variables
+                );
+                String confirmTextContent = templateService.generateTextContent(variables);
+
+                sendEmailToClient(config, confirmHtmlContent, confirmTextContent, request.getEmail());
+                log.info("Email de confirmation envoyé avec succès à {} pour {} / {}",
+                        request.getEmail(), appCode, mailType);
+            } catch (MessagingException | UnsupportedEncodingException e) {
+                log.error("Erreur lors de l'envoi de l'email de confirmation", e);
+                // On ne throw pas d'exception ici pour ne pas bloquer si l'email admin est passé
+                log.warn("L'email de confirmation n'a pas pu être envoyé, mais l'email admin a été envoyé");
+            }
         }
     }
 
@@ -91,57 +106,7 @@ public class MailService {
     }
 
 
-    private void sendEmailToConfirm(
-            MailConfiguration config,
-            String htmlContent,
-            String textContent,
-            String userEmail
-    ) throws MessagingException, UnsupportedEncodingException {
-
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
-        // Expéditeur
-        helper.setFrom(
-                new InternetAddress(config.getFromAddress(), config.getFromName())
-        );
-
-        // Destinataires
-        helper.setTo(userEmail);
-
-        if (config.getCcAddresses() != null && !config.getCcAddresses().isEmpty()) {
-            helper.setCc(config.getCcAddresses().toArray(new String[0]));
-        }
-
-        if (config.getBccAddresses() != null && !config.getBccAddresses().isEmpty()) {
-            helper.setBcc(config.getBccAddresses().toArray(new String[0]));
-        }
-
-        // Reply-To : l'utilisateur qui a rempli le formulaire
-        helper.setReplyTo(userEmail);
-
-        // Sujet
-        helper.setSubject(config.getSubject());
-
-        // Contenu (HTML + texte en fallback)
-        helper.setText(textContent, htmlContent);
-
-        // Logs détaillés avant envoi
-        String fromAddr = config.getFromAddress();
-        String fromName = config.getFromName() != null ? config.getFromName() : "";
-        String[] to = config.getToAddresses().toArray(new String[0]);
-        String[] cc = config.getCcAddresses() != null ? config.getCcAddresses().toArray(new String[0]) : new String[0];
-        String[] bcc = config.getBccAddresses() != null ? config.getBccAddresses().toArray(new String[0]) : new String[0];
-
-        log.info("Envoi email — expéditeur: {} <{}>, destinataires: {}, cc: {}, bcc: {}, replyTo: {}",
-                fromName, fromAddr, Arrays.toString(to), Arrays.toString(cc), Arrays.toString(bcc), userEmail);
-
-        // Envoi
-        mailSender.send(message);
-    }
-
-
-    private void sendEmail(
+    private void sendEmailToAdmin(
             MailConfiguration config,
             String htmlContent,
             String textContent,
@@ -177,14 +142,48 @@ public class MailService {
         helper.setText(textContent, htmlContent);
 
         // Logs détaillés avant envoi
-        String fromAddr = config.getFromAddress();
-        String fromName = config.getFromName() != null ? config.getFromName() : "";
-        String[] to = config.getToAddresses().toArray(new String[0]);
-        String[] cc = config.getCcAddresses() != null ? config.getCcAddresses().toArray(new String[0]) : new String[0];
-        String[] bcc = config.getBccAddresses() != null ? config.getBccAddresses().toArray(new String[0]) : new String[0];
+        log.info("Envoi email ADMIN — expéditeur: {} <{}>, destinataires: {}, replyTo: {}",
+                config.getFromName(), config.getFromAddress(),
+                Arrays.toString(config.getToAddresses().toArray(new String[0])), userEmail);
 
-        log.info("Envoi email — expéditeur: {} <{}>, destinataires: {}, cc: {}, bcc: {}, replyTo: {}",
-                fromName, fromAddr, Arrays.toString(to), Arrays.toString(cc), Arrays.toString(bcc), userEmail);
+        // Envoi
+        mailSender.send(message);
+    }
+
+
+    private void sendEmailToClient(
+            MailConfiguration config,
+            String htmlContent,
+            String textContent,
+            String userEmail
+    ) throws MessagingException, UnsupportedEncodingException {
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+        // Expéditeur
+        helper.setFrom(
+                new InternetAddress(config.getFromAddress(), config.getFromName())
+        );
+
+        // Destinataires
+        helper.setTo(userEmail);
+
+        // Reply-To : l'adresse de l'entreprise
+        helper.setReplyTo(config.getReplyTo() != null ? config.getReplyTo() : config.getFromAddress());
+
+
+        // Sujet de confirmation
+        String confirmSubject = config.getSubject().replace("Nouveau message", "Confirmation de votre message")
+                .replace("Nouvelle demande", "Confirmation de votre demande");
+        helper.setSubject(confirmSubject);
+
+        // Contenu (HTML + texte en fallback)
+        helper.setText(textContent, htmlContent);
+
+        // Logs détaillés avant envoi
+        log.info("Envoi email CONFIRMATION — expéditeur: {} <{}>, destinataire: {}, replyTo: {}",
+                config.getFromName(), config.getFromAddress(), userEmail, config.getReplyTo());
 
         // Envoi
         mailSender.send(message);

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de votre demande de devis - Assurantis</title>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: #4A4A4A;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #F5F5F5;
+        }
+        .container {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #C0182A 0%, #8F1120 100%);
+            color: white;
+            padding: 40px 32px;
+            text-align: center;
+        }
+        .header-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        .header p {
+            margin: 8px 0 0 0;
+            opacity: 0.95;
+            font-size: 0.95rem;
+        }
+        .content {
+            padding: 40px 32px;
+        }
+        .success-message {
+            background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
+            padding: 24px;
+            border-radius: 0.75rem;
+            border-left: 4px solid #C0182A;
+            margin-bottom: 32px;
+        }
+        .success-message h2 {
+            margin: 0 0 12px 0;
+            color: #C0182A;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .success-message p {
+            margin: 0;
+            color: #4A4A4A;
+            line-height: 1.7;
+        }
+        .reference-box {
+            background: linear-gradient(135deg, #8F1120 0%, #C0182A 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 0.75rem;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .reference-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .reference-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+        .info-box {
+            background: #F5F5F5;
+            padding: 24px;
+            border-radius: 0.75rem;
+            margin-bottom: 24px;
+        }
+        .info-box h3 {
+            margin: 0 0 16px 0;
+            color: #8F1120;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .info-section {
+            margin-bottom: 20px;
+        }
+        .info-section:last-child {
+            margin-bottom: 0;
+        }
+        .section-subtitle {
+            font-weight: 600;
+            color: #C0182A;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #E5E5E5;
+        }
+        .info-item {
+            padding: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #8C8C8C;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            margin-right: 16px;
+        }
+        .info-value {
+            color: #4A4A4A;
+            font-size: 0.95rem;
+            text-align: right;
+        }
+        .insurance-types {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        .insurance-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: white;
+            border: 2px solid #C0182A;
+            color: #C0182A;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .additional-info-content {
+            background: #FFFFFF;
+            padding: 16px;
+            border: 2px solid #E5E5E5;
+            border-radius: 0.75rem;
+            margin-top: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.7;
+            color: #4A4A4A;
+            font-size: 0.9rem;
+        }
+        .next-steps {
+            background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
+            padding: 24px;
+            border-radius: 0.75rem;
+            margin: 32px 0;
+        }
+        .next-steps h3 {
+            margin: 0 0 16px 0;
+            color: #C0182A;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .next-steps ul {
+            margin: 0;
+            padding-left: 24px;
+            color: #4A4A4A;
+        }
+        .next-steps li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        .contact-info {
+            text-align: center;
+            padding: 24px;
+            background: #F5F5F5;
+            border-radius: 0.75rem;
+            margin: 24px 0;
+        }
+        .contact-info h4 {
+            margin: 0 0 16px 0;
+            color: #4A4A4A;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .contact-method {
+            display: inline-block;
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #E5E5E5;
+            border-radius: 0.5rem;
+            color: #C0182A;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .contact-method:hover {
+            border-color: #C0182A;
+            background: #FEF2F2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(192, 24, 42, 0.15);
+        }
+        .footer {
+            padding: 32px;
+            background: #F5F5F5;
+            border-top: 1px solid #E5E5E5;
+            text-align: center;
+        }
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #C0182A;
+            margin-bottom: 16px;
+        }
+        .footer p {
+            margin: 8px 0;
+            color: #8C8C8C;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        .footer a {
+            color: #C0182A;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .social-links {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #E5E5E5;
+        }
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #E5E5E5, transparent);
+            margin: 32px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <span class="header-icon">✅</span>
+        <h1>Demande de devis reçue !</h1>
+        <p>Merci pour votre confiance</p>
+    </div>
+
+    <div class="content">
+        <div class="success-message">
+            <h2>Confirmation de votre demande</h2>
+            <p>
+                <strong>Bonjour <span th:text="${quote.profile.firstName}">Jean</span>,</strong><br><br>
+                Nous avons bien reçu votre demande de devis et nous vous en remercions. Notre équipe d'experts va analyser vos besoins avec attention et vous proposera une offre personnalisée sous 24 heures.
+            </p>
+        </div>
+
+        <div class="reference-box">
+            <div class="reference-label">Votre numéro de référence</div>
+            <div class="reference-number" th:text="${reference}">REF-12345678</div>
+        </div>
+
+        <div class="info-box">
+            <h3>📋 Récapitulatif de votre demande</h3>
+            
+            <!-- Profil -->
+            <div class="info-section">
+                <div class="section-subtitle">Vos coordonnées</div>
+                <div class="info-item">
+                    <span class="info-label">Nom</span>
+                    <span class="info-value">
+                        <span th:text="${quote.profile.firstName}">Jean</span>
+                        <span th:text="${quote.profile.lastName}">Dupont</span>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Email</span>
+                    <span class="info-value" th:text="${quote.profile.email}">jean.dupont@email.com</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Téléphone</span>
+                    <span class="info-value" th:text="${quote.profile.phone}">+32 4XX XX XX XX</span>
+                </div>
+            </div>
+
+            <!-- Besoins -->
+            <div class="info-section">
+                <div class="section-subtitle">Vos besoins</div>
+                <div class="info-item">
+                    <span class="info-label">Assurances</span>
+                    <div class="insurance-types">
+                        <span class="insurance-badge" 
+                              th:each="type : ${quote.needs.insuranceTypes}"
+                              th:text="${type}">Auto</span>
+                    </div>
+                </div>
+                <div class="info-item" th:if="${quote.needs.budget}">
+                    <span class="info-label">Budget</span>
+                    <span class="info-value" th:text="${quote.needs.budget}">100€ - 200€</span>
+                </div>
+                <div class="info-item" th:if="${quote.needs.startDate}">
+                    <span class="info-label">Démarrage</span>
+                    <span class="info-value" th:text="${quote.needs.startDate}">01/01/2025</span>
+                </div>
+            </div>
+
+            <!-- Détails -->
+            <div class="info-section">
+                <div class="section-subtitle">Informations complémentaires</div>
+                <div class="info-item">
+                    <span class="info-label">Assurance actuelle</span>
+                    <span class="info-value">
+                        <span th:if="${quote.details.currentInsurance == 'yes'}">
+                            Oui
+                            <span th:if="${quote.details.currentInsurer}" 
+                                  th:text="' (' + ${quote.details.currentInsurer} + ')'"></span>
+                        </span>
+                        <span th:if="${quote.details.currentInsurance == 'no'}">Non</span>
+                    </span>
+                </div>
+                <div th:if="${quote.details.additionalInfo}">
+                    <div class="info-label" style="margin-bottom: 8px;">Votre message</div>
+                    <div class="additional-info-content" th:text="${quote.details.additionalInfo}">
+                        Informations supplémentaires...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="next-steps">
+            <h3>🔄 Prochaines étapes</h3>
+            <ul>
+                <li>Notre équipe étudie votre profil et vos besoins spécifiques</li>
+                <li>Vous recevrez un devis personnalisé sous <strong>24 heures ouvrables</strong></li>
+                <li>Le devis comprendra plusieurs options adaptées à votre budget</li>
+                <li>Conservez votre numéro de référence <strong th:text="${reference}">REF-12345678</strong> pour toute communication</li>
+                <li>Nous vous contacterons à l'adresse <strong th:text="${quote.profile.email}">email@example.com</strong></li>
+            </ul>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="contact-info">
+            <h4>💬 Une question en attendant votre devis ?</h4>
+            <div class="contact-methods">
+                <a href="tel:+32123456789" class="contact-method">📞 Appelez-nous</a>
+                <a href="https://assurantis.gilmotech.be" class="contact-method">🌐 Visitez notre site</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-logo">ASSURANTIS</div>
+        <p>
+            <strong>Votre partenaire en assurance de confiance</strong><br>
+            Nous protégeons ce qui compte pour vous
+        </p>
+        <p>
+            <a href="https://assurantis.gilmotech.be">assurantis.gilmotech.be</a><br>
+            Email: <a href="mailto:contact@assurantis.be">contact@assurantis.be</a>
+        </p>
+        <div class="social-links">
+            <p style="color: #8C8C8C; font-size: 0.8rem;">
+                © 2024 Assurantis. Tous droits réservés.
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
