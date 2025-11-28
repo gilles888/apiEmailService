@@ -33,6 +33,9 @@ app:
   cors:
     allowed-origins:
       - http://localhost:4200
+      - https://assurantis.be
+      - https://assurantis.gilmotech.be
+      - https://www.gilmotech.be
 
 server:
   port: 8080
