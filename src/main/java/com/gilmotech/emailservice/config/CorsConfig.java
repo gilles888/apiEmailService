@@ -13,18 +13,17 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-    @Value("${app.cors.allowed-origins:http://localhost:4200}")
-    private List<String> allowedOrigins;
 
-    @Value("${app.cors.allowed-methods:GET,POST,PUT,DELETE,OPTIONS,PATCH}")
-    private List<String> allowedMethods;
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOriginPatterns(allowedOrigins); // IMPORTANT
-        configuration.setAllowedMethods(allowedMethods);
+        configuration.setAllowedOriginPatterns(List.of(
+                "http://localhost:4200",   // dev Angular
+                "https://assurantis.be",   // prod
+                "https://www.assurantis.be")); // IMPORTANT
+        configuration.setAllowedMethods((List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of(
                 "Content-Disposition",
