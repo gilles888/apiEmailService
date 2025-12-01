@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -18,9 +19,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/**").permitAll()
+                        .requestMatchers(
+                                "/actuator/health",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 );
 
+
+        http.formLogin(AbstractHttpConfigurer::disable);
+        http.httpBasic(AbstractHttpConfigurer::disable);
         return http.build();
     }
 }
