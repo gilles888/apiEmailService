@@ -37,12 +37,12 @@ jobs:
           scp -o StrictHostKeyChecking=no artifact/app.jar \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/email-service/app.jar
 
-      - name: Fix permissions on JAR
+      - name: Fix permissions on JAR (sudo without password)
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
-            "sudo chown emailservice:emailservice /opt/email-service/app.jar"
+            "sudo /usr/bin/chown emailservice:emailservice /opt/email-service/app.jar"
 
-      - name: Restart email-service on VPS
+      - name: Restart email-service on VPS (sudo without password)
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
-            "sudo systemctl restart email-service"
+            "sudo /usr/bin/systemctl restart email-service"
