@@ -22,7 +22,7 @@ public class CorsConfig {
         configuration.setAllowedOriginPatterns(List.of(
                 "http://localhost:4200",   // dev Angular
                 "https://assurantis.be",   // prod
-                "https://www.assurantis.be")); // IMPORTANT
+                "https://www.assurantis.be")); // IMPORTANT add
         configuration.setAllowedMethods((List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of(
