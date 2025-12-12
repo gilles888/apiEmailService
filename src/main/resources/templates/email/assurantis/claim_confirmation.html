@@ -1,0 +1,459 @@
+<<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de votre déclaration de sinistre - Assurantis</title>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: #4A4A4A;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #F5F5F5;
+        }
+        .container {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #C0182A 0%, #8F1120 100%);
+            color: white;
+            padding: 40px 32px;
+            text-align: center;
+        }
+        .header-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        .header p {
+            margin: 8px 0 0 0;
+            opacity: 0.95;
+            font-size: 0.95rem;
+        }
+        .content {
+            padding: 40px 32px;
+        }
+        .success-message {
+            background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
+            padding: 24px;
+            border-radius: 0.75rem;
+            border-left: 4px solid #C0182A;
+            margin-bottom: 32px;
+        }
+        .success-message h2 {
+            margin: 0 0 12px 0;
+            color: #C0182A;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .success-message p {
+            margin: 0;
+            color: #4A4A4A;
+            line-height: 1.7;
+        }
+        .reference-box {
+            background: linear-gradient(135deg, #8F1120 0%, #C0182A 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 0.75rem;
+            text-align: center;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 16px rgba(192, 24, 42, 0.2);
+        }
+        .reference-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .reference-number {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        .reference-note {
+            font-size: 0.8rem;
+            opacity: 0.85;
+            margin-top: 12px;
+        }
+        .info-box {
+            background: #F5F5F5;
+            padding: 24px;
+            border-radius: 0.75rem;
+            margin-bottom: 24px;
+        }
+        .info-box h3 {
+            margin: 0 0 16px 0;
+            color: #8F1120;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .info-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #E5E5E5;
+        }
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #8C8C8C;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+        .info-value {
+            color: #4A4A4A;
+            font-size: 1rem;
+        }
+        .message-recap {
+            background: #FFFFFF;
+            padding: 20px;
+            border: 2px solid #E5E5E5;
+            border-radius: 0.75rem;
+            margin-top: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.7;
+            color: #4A4A4A;
+            font-size: 0.95rem;
+        }
+        .attachments-recap {
+            background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
+            padding: 20px;
+            border-radius: 0.75rem;
+            margin-top: 12px;
+            border: 1px solid #FFE0E0;
+        }
+        .attachments-title {
+            font-weight: 600;
+            color: #C0182A;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .attachment-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .attachment-list li {
+            padding: 8px 0;
+            color: #4A4A4A;
+            font-size: 0.9rem;
+        }
+        .attachment-list li:before {
+            content: "📎 ";
+            margin-right: 8px;
+        }
+        .timeline-box {
+            background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
+            padding: 24px;
+            border-radius: 0.75rem;
+            margin: 32px 0;
+        }
+        .timeline-box h3 {
+            margin: 0 0 20px 0;
+            color: #C0182A;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .timeline-item {
+            display: flex;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            background: #C0182A;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-right: 16px;
+        }
+        .timeline-content h4 {
+            margin: 0 0 4px 0;
+            color: #4A4A4A;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .timeline-content p {
+            margin: 0;
+            color: #8C8C8C;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .important-box {
+            background: #FFF9E6;
+            border: 2px solid #FFD700;
+            padding: 20px;
+            border-radius: 0.75rem;
+            margin: 24px 0;
+        }
+        .important-box h4 {
+            margin: 0 0 12px 0;
+            color: #B8860B;
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        .important-box ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #4A4A4A;
+        }
+        .important-box li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        .contact-info {
+            text-align: center;
+            padding: 24px;
+            background: #F5F5F5;
+            border-radius: 0.75rem;
+            margin: 24px 0;
+        }
+        .contact-info h4 {
+            margin: 0 0 16px 0;
+            color: #4A4A4A;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .contact-method {
+            display: inline-block;
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #E5E5E5;
+            border-radius: 0.5rem;
+            color: #C0182A;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .contact-method:hover {
+            border-color: #C0182A;
+            background: #FEF2F2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(192, 24, 42, 0.15);
+        }
+        .footer {
+            padding: 32px;
+            background: #F5F5F5;
+            border-top: 1px solid #E5E5E5;
+            text-align: center;
+        }
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #C0182A;
+            margin-bottom: 16px;
+        }
+        .footer p {
+            margin: 8px 0;
+            color: #8C8C8C;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        .footer a {
+            color: #C0182A;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .social-links {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #E5E5E5;
+        }
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #E5E5E5, transparent);
+            margin: 32px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <span class="header-icon">✅</span>
+        <h1>Déclaration bien reçue !</h1>
+        <p>Nous traitons votre dossier en priorité</p>
+    </div>
+
+    <div class="content">
+        <div class="success-message">
+            <h2>Confirmation de réception</h2>
+            <p>
+                <strong>Bonjour <span th:text="${name}">Jean Dupont</span>,</strong><br><br>
+                Nous avons bien reçu votre déclaration de sinistre et nous vous en remercions. Votre dossier est maintenant entre les mains de nos experts qui vont l'examiner avec la plus grande attention.
+            </p>
+        </div>
+
+        <div class="reference-box">
+            <div class="reference-label">Numéro de dossier</div>
+            <div class="reference-number" th:text="${reference}">SIN-12345678</div>
+            <div class="reference-note">
+                💡 Conservez précieusement ce numéro pour toute communication avec nos services
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>📋 Récapitulatif de votre déclaration</h3>
+
+            <div class="info-item">
+                <div class="info-label">Votre nom</div>
+                <div class="info-value" th:text="${name}">Jean Dupont</div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label">Email</div>
+                <div class="info-value" th:text="${email}">jean.dupont@email.com</div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label">Téléphone</div>
+                <div class="info-value" th:text="${phone}">+32 4XX XX XX XX</div>
+            </div>
+
+            <div class="info-item" th:if="${subject}">
+                <div class="info-label">Type de sinistre</div>
+                <div class="info-value" th:text="${subject}">Accident de voiture</div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label">Description</div>
+                <div class="message-recap" th:text="${message}">
+                    Description du sinistre...
+                </div>
+            </div>
+
+            <div class="info-item" th:if="${hasAttachments}">
+                <div class="info-label">Documents joints</div>
+                <div class="attachments-recap">
+                    <div class="attachments-title">
+                        📎 <span th:text="${attachmentCount}">3</span> fichier(s) reçu(s)
+                    </div>
+                    <ul class="attachment-list">
+                        <li th:each="attachment : ${attachments}" th:text="${attachment.filename}">
+                            photo_sinistre_1.jpg
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-box">
+            <h3>🔄 Prochaines étapes du traitement</h3>
+
+            <div class="timeline-item">
+                <div class="timeline-icon">1</div>
+                <div class="timeline-content">
+                    <h4>Analyse de votre dossier</h4>
+                    <p>Notre équipe d'experts examine votre déclaration et les documents fournis (24-48h)</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon">2</div>
+                <div class="timeline-content">
+                    <h4>Prise de contact</h4>
+                    <p>Un gestionnaire de sinistres vous contactera pour valider les informations et planifier une expertise si nécessaire</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon">3</div>
+                <div class="timeline-content">
+                    <h4>Expertise et évaluation</h4>
+                    <p>Si requis, un expert se déplacera pour constater les dommages et établir un rapport</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon">4</div>
+                <div class="timeline-content">
+                    <h4>Indemnisation</h4>
+                    <p>Une fois le dossier validé, nous procédons au règlement de votre indemnisation</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="important-box">
+            <h4>⚠️ Informations importantes</h4>
+            <ul>
+                <li>Conservez tous les justificatifs et factures relatifs au sinistre</li>
+                <li>Ne procédez à aucune réparation définitive avant l'expertise</li>
+                <li>En cas d'urgence, prenez les mesures nécessaires pour limiter les dégâts</li>
+                <li>Vous recevrez un accusé de réception officiel sous 48h ouvrables</li>
+                <li>Un gestionnaire vous sera attribué et vous contactera prochainement</li>
+            </ul>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="contact-info">
+            <h4>💬 Besoin d'informations supplémentaires ?</h4>
+            <p style="color: #8C8C8C; font-size: 0.9rem; margin-bottom: 16px;">
+                Notre service sinistres est à votre disposition
+            </p>
+            <div class="contact-methods">
+                <a href="tel:+32477790383" class="contact-method">📞 Service sinistres : +32 477 79 03 83</a>
+                <a href="mailto:sinistres@assurantis.be" class="contact-method">✉️ sinistres@assurantis.be</a>
+            </div>
+            <p style="color: #8C8C8C; font-size: 0.85rem; margin-top: 16px;">
+                Horaires : Du lundi au vendredi, 9h-18h
+            </p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-logo">ASSURANTIS</div>
+        <p>
+            <strong>Votre partenaire en assurance de confiance</strong><br>
+            À vos côtés dans les moments difficiles
+        </p>
+        <p>
+            <a href="https://assurantis.be">assurantis.be</a><br>
+            Email: <a href="mailto:sinistres@assurantis.be">sinistres@assurantis.be</a>
+        </p>
+        <div class="social-links">
+            <p style="color: #8C8C8C; font-size: 0.8rem;">
+                © 2024 Assurantis. Tous droits réservés.
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

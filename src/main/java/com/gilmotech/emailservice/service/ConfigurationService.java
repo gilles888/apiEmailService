@@ -43,6 +43,19 @@ public class ConfigurationService {
         assurantisQuote.setTemplatePathConfirmation("email/assurantis/quote_confirmation");
         assurantisQuote.setActive(true);
 
+        // Configuration Assurantis - Déclaration de Sinistre
+        MailConfiguration assurantisClaim = new MailConfiguration();
+        assurantisClaim.setAppCode(AppCode.ASSURANTIS);
+        assurantisClaim.setMailType(MailType.CLAIM_REQUEST);
+        assurantisClaim.setFromAddress("contact@assurantis.be");
+        assurantisClaim.setFromName("Assurantis - Déclarations de Sinistre");
+        assurantisClaim.setToAddresses(List.of("contact@assurantis.be"));
+        assurantisClaim.setReplyTo("contact@assurantis.be");
+        assurantisClaim.setSubject("Nouvelle déclaration de sinistre - Assurantis");
+        assurantisClaim.setTemplatePath("email/assurantis/claim_admin");
+        assurantisClaim.setTemplatePathConfirmation("email/assurantis/claim_confirmation");
+        assurantisClaim.setActive(true);
+
         // Configuration Gilmotech - Contact
         MailConfiguration gilmotechContact = new MailConfiguration();
         gilmotechContact.setAppCode(AppCode.GILMOTECH);
@@ -56,8 +69,9 @@ public class ConfigurationService {
         gilmotechContact.setActive(true);
 
         // Ajouter à la map
-        configurations.put(getKey(AppCode.ASSURANTIS, MailType.QUOTE_REQUEST), assurantisQuote);
         configurations.put(getKey(AppCode.ASSURANTIS, MailType.CONTACT_FORM), assurantisContact);
+        configurations.put(getKey(AppCode.ASSURANTIS, MailType.QUOTE_REQUEST), assurantisQuote);
+        configurations.put(getKey(AppCode.ASSURANTIS, MailType.CLAIM_REQUEST), assurantisClaim);
         configurations.put(getKey(AppCode.GILMOTECH, MailType.CONTACT_FORM), gilmotechContact);
 
         log.info("Configurations chargées: {}", configurations.size());
