@@ -1,8 +1,11 @@
 package com.gilmotech.emailservice.dto;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -14,7 +17,7 @@ public class MailRequestDto {
     private String appCode;
 
     @NotBlank(message = "Le type de mail est obligatoire")
-    @Pattern(regexp = "CONTACT_FORM|QUOTE_REQUEST|NEWSLETTER_SUBSCRIPTION|APPOINTMENT_REQUEST",
+    @Pattern(regexp = "CONTACT_FORM|QUOTE_REQUEST|NEWSLETTER_SUBSCRIPTION|APPOINTMENT_REQUEST|CLAIM_REQUEST",
             message = "Type de mail invalide")
     private String mailType;
 
@@ -41,6 +44,11 @@ public class MailRequestDto {
 
     // Champ honeypot (anti-bot) - doit rester vide
     private String website;
+
+    // Fichiers joints (optionnel)
+    @Valid
+    @Size(max = 15, message = "Maximum 15 fichiers autorisés")
+    private List<FileAttachmentDto> attachments = new ArrayList<>();
 
     // Données additionnelles spécifiques
     private Map<String, Object> additionalData;

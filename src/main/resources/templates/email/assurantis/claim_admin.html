@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nouvelle déclaration de sinistre</title>
+  <style>
+    body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        line-height: 1.6;
+        color: #4A4A4A;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #F5F5F5;
+    }
+    .container {
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+    }
+    .header {
+        background: linear-gradient(135deg, #C0182A 0%, #8F1120 100%);
+        color: white;
+        padding: 32px;
+        text-align: center;
+    }
+    .header h1 {
+        margin: 0;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+    }
+    .header p {
+        margin: 8px 0 0 0;
+        opacity: 0.95;
+        font-size: 0.95rem;
+    }
+    .content {
+        padding: 32px;
+    }
+    .urgent-badge {
+        display: inline-block;
+        padding: 8px 16px;
+        background: #FEF2F2;
+        border: 2px solid #C0182A;
+        color: #C0182A;
+        border-radius: 1rem;
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .intro {
+        margin-bottom: 28px;
+        padding: 16px;
+        background: #FEF2F2;
+        border-left: 4px solid #C0182A;
+        border-radius: 0.5rem;
+        color: #4A4A4A;
+    }
+    .field {
+        margin-bottom: 20px;
+        padding: 20px;
+        background: #F5F5F5;
+        border-radius: 0.75rem;
+        transition: all 0.3s ease;
+    }
+    .field:hover {
+        background: #E5E5E5;
+        transform: translateX(4px);
+    }
+    .field-label {
+        font-weight: 600;
+        color: #C0182A;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 8px;
+    }
+    .field-value {
+        color: #4A4A4A;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    .field-value a {
+        color: #C0182A;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    .field-value a:hover {
+        color: #8F1120;
+        text-decoration: underline;
+    }
+    .message-content {
+        background: #FFFFFF;
+        padding: 24px;
+        border: 2px solid #E5E5E5;
+        border-radius: 0.75rem;
+        margin-top: 12px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        line-height: 1.7;
+        color: #4A4A4A;
+    }
+    .attachments-section {
+        background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
+        padding: 24px;
+        border-radius: 0.75rem;
+        margin: 24px 0;
+        border: 2px solid #C0182A;
+    }
+    .attachments-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #C0182A;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+    }
+    .attachment-item {
+        background: white;
+        padding: 12px 16px;
+        border-radius: 0.5rem;
+        margin-bottom: 8px;
+        border: 1px solid #E5E5E5;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .attachment-name {
+        font-weight: 600;
+        color: #4A4A4A;
+        flex-grow: 1;
+    }
+    .attachment-type {
+        display: inline-block;
+        padding: 4px 8px;
+        background: #C0182A;
+        color: white;
+        border-radius: 0.25rem;
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-left: 12px;
+        text-transform: uppercase;
+    }
+    .cta-section {
+        text-align: center;
+        margin: 32px 0;
+        padding: 24px;
+        background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
+        border-radius: 0.75rem;
+    }
+    .cta-button {
+        display: inline-block;
+        padding: 14px 32px;
+        background: linear-gradient(135deg, #C0182A 0%, #8F1120 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        box-shadow: 0 4px 16px rgba(192, 24, 42, 0.2);
+        transition: all 0.3s ease;
+    }
+    .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(192, 24, 42, 0.3);
+    }
+    .footer {
+        margin-top: 32px;
+        padding: 24px 32px;
+        background: #F5F5F5;
+        border-top: 1px solid #E5E5E5;
+        font-size: 0.85rem;
+        color: #8C8C8C;
+        text-align: center;
+        line-height: 1.6;
+    }
+    .footer a {
+        color: #C0182A;
+        text-decoration: none;
+    }
+    .footer a:hover {
+        text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🚨 Nouvelle Déclaration de Sinistre</h1>
+    <p>Déclaration urgente - Assurantis</p>
+  </div>
+
+  <div class="content">
+    <div style="text-align: center;">
+      <span class="urgent-badge">⚠️ Déclaration de Sinistre - Action Requise</span>
+    </div>
+
+    <div class="intro">
+      <strong>🔔 Notification Urgente :</strong> Une nouvelle déclaration de sinistre a été soumise via le formulaire du site web Assurantis. Cette déclaration nécessite un traitement prioritaire.
+    </div>
+
+    <div class="field">
+      <div class="field-label">👤 Nom de l'assuré</div>
+      <div class="field-value" th:text="${name}">Jean Dupont</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">✉️ Email</div>
+      <div class="field-value">
+        <a th:href="'mailto:' + ${email}" th:text="${email}">email@example.com</a>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">📱 Téléphone</div>
+      <div class="field-value">
+        <a th:href="'tel:' + ${phone}" th:text="${phone}">+32 4XX XX XX XX</a>
+      </div>
+    </div>
+
+    <div class="field" th:if="${company}">
+      <div class="field-label">🏢 Entreprise</div>
+      <div class="field-value" th:text="${company}">Acme Corp</div>
+    </div>
+
+    <div class="field" th:if="${subject}">
+      <div class="field-label">📋 Type de sinistre</div>
+      <div class="field-value" th:text="${subject}">Accident de voiture</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">💬 Description du sinistre</div>
+      <div class="message-content" th:text="${message}">
+        Description détaillée du sinistre...
+      </div>
+    </div>
+
+    <!-- Section Pièces Jointes -->
+    <div class="attachments-section" th:if="${hasAttachments}">
+      <div class="attachments-title">
+        📎 Pièces jointes (<span th:text="${attachmentCount}">3</span> fichier(s))
+      </div>
+      <p style="color: #8C8C8C; font-size: 0.9rem; margin-bottom: 16px;">
+        Les documents suivants sont joints à cette déclaration :
+      </p>
+      <div th:each="attachment : ${attachments}" class="attachment-item">
+        <span class="attachment-name" th:text="${attachment.filename}">photo_sinistre_1.jpg</span>
+        <span class="attachment-type" th:text="${attachment.mimeType}">image/jpeg</span>
+      </div>
+      <p style="color: #8C8C8C; font-size: 0.85rem; margin-top: 16px; font-style: italic;">
+        💡 Les fichiers sont joints à cet email. Vérifiez les pièces jointes pour consulter les documents.
+      </p>
+    </div>
+
+    <div class="cta-section">
+      <p style="margin: 0 0 16px 0; color: #4A4A4A; font-weight: 600;">
+        Traitez cette déclaration en priorité
+      </p>
+      <a th:href="'mailto:' + ${email}" class="cta-button">
+        📧 Contacter l'assuré
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>
+      <strong>Assurantis</strong> - Gestion des sinistres<br>
+      Déclaration envoyée depuis <a href="https://assurantis.be">assurantis.be</a><br>
+      <span style="color: #8C8C8C; font-size: 0.8rem;">
+                © 2024 Assurantis. Tous droits réservés.
+            </span>
+    </p>
+  </div>
+</div>
+</body>
+</html>

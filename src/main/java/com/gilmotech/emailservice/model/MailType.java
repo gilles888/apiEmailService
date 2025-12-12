@@ -3,7 +3,8 @@ package com.gilmotech.emailservice.model;
 public enum MailType {CONTACT_FORM,
     QUOTE_REQUEST,
     NEWSLETTER_SUBSCRIPTION,
-    APPOINTMENT_REQUEST;
+    APPOINTMENT_REQUEST,
+    CLAIM_REQUEST;
 
     public static MailType fromString(String type) {
         try {
